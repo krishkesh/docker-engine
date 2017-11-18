@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  remote_user: root
+  roles:
+    - { role: docengine-role }
+  tasks:
+    - name: verify docker installed 
+      command: docker  --version
+      register: docker_version
+      changed_when: false
+
+    - name: installed docker version is "{{ docker_version.stdout }}"
+      debug: msg="{{ docker_version }}"
+...

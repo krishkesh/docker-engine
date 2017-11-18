@@ -1,0 +1,9 @@
+---
+# tasks file for docengine-role
+- name: install docker with yum in centos
+  include:  centos.yml
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
+  
+- name: docker service start
+  service: name={{ srvcname }} state=started enabled=yes
+...

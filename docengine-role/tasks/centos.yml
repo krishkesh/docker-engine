@@ -1,0 +1,34 @@
+---
+- name: delete  docker packages, if already installed
+  yum:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - docker
+    - docker-common
+    - container-selinux
+    - docker-selinux
+    - docker-engine
+
+- name: pre-requiste pkgs for docker install 
+  yum:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items:
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+
+- name: add docker-ce repository (centos7)
+  command: yum-config-manager --add-repo \
+           https://download.docker.com/linux/centos/docker-ce.repo 
+
+- name: install docker-ce
+  yum:
+    name: docker-ce
+    update_cache: yes
+
+- name: create docker config dir
+  file:
+    path: /etc/docker
+    state: directory
